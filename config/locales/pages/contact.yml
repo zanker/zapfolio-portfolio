@@ -1,0 +1,12 @@
+en:
+  pages:
+    contact:
+      email: Email
+      message: Message
+      error: Error
+      fill_blanks: Please fill in all the required fields to send your message.
+      john_doe: john.doe@gmail.com
+      send_message: Send Message
+      thanks_sent: Thanks! Your message has been sent.
+      note_required: required fields
+

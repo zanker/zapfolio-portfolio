@@ -1,0 +1,78 @@
+!!!
+%html{:lang => :en}
+  %head
+    %meta{:charset => "utf-8"}
+    %meta{:name => :viewport, :content => "width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no"}
+    - if @website.seo_paid?
+      - if @website.name?
+        %meta{:name => "og:site_name", :content => @website.name}
+        %meta{:name => "og:title", :content => page_title(true)}
+        %meta{:name => "og:url", :content => request.url}
+
+      - if @website.meta_description?
+        %meta{:name => :description, :content => @website.meta_description}
+      - if @website.meta_keywords?
+        %meta{:name => :keywords, :content => @website.meta_keywords}
+
+
+    %title= page_title
+    - if @website.favicon_uid?
+      = favicon_link_tag(@website.favicon.url)
+
+    :javascript
+      Portfolio={website_id:"#{@website._id}",cache_bust:{css:"#{@website.cache_bust["css"]}"}};
+
+    - if !@editor_mode
+      = stylesheet_link_tag(website_asset_url(@website), :media => "all")
+
+    - else
+      = stylesheet_link_tag(website_asset_url(@website, {:fragment => "header"}), :media => "all", :id => "css-header")
+
+      - if @website.active_style == Website::BASIC
+        = stylesheet_link_tag(website_asset_url(@website, {:fragment => @website.css_layout}), :media => "all", "data-layout" => @website.css_layout, :id => "page-css-layout")
+      - elsif @website.active_style == Website::RESTYLE
+        = stylesheet_link_tag(website_asset_url(@website, {:fragment => "restyle"}), :media => "all", :id => "page-css-restyled")
+      %style#page-css
+
+      = stylesheet_link_tag(website_asset_url(@website, {:fragment => "footer"}), :media => "all")
+
+      = javascript_include_tag("css_editor")
+
+    - if Rails.env.production?
+      = javascript_include_tag("application", :async => true, :defer => true, :onload => "Portfolio.initialize('#{@page ? @page.scope.gsub("-", "_").gsub("page_", "") : ""}');")
+    - else
+      = javascript_include_tag("application")
+
+    - if @website.seo_paid? and @website.analytics and @website.analytics.ga?
+      :javascript
+        var _gaq = [['_setAccount', '#{@website.analytics.ga}'], ['_trackPageview']];
+        (function() {
+          var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+          ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+
+%body
+  #wrapper{:class => "#{@website.alignment(:site_align)} menu-#{@website.alignment(:menu_align)}"}
+    #side-bar{:class => @website.alignment(:menu_align)}
+      - if @website.logo_uid?
+        #logo
+          %a{:href => "/"}
+            = image_tag(@website.logo.url, :alt => t("logo"), :width => @website.logo_meta["width"] ? "#{@website.logo_meta["width"]}px" : nil, :height => @website.logo_meta["height"] ? "#{@website.logo_meta["height"]}px" : nil)
+
+      != build_menu(@website, @page)
+
+    #content{:class => @page ? @page.scope : nil}
+      = yield
+
+    %footer
+      - if !@website.brand_paid?
+        &copy; #{Time.now.year},
+        = t("powered_by")
+        = link_to(t("zapfolio"), "https://www.zapfol.io")
+      - else
+        &copy; #{Time.now.year}
+
+  - if Rails.env.development?
+    :javascript
+      Portfolio.initialize('#{@page ? @page.scope.gsub("-", "_").gsub("page_", "") : ""}');

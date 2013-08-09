@@ -1,0 +1,6 @@
+en:
+  pages:
+    "500":
+      page_error: Page Error
+      desc_1: Sorry, we had an error while trying to load this page.
+      desc_2: We've been contacted about this and it will be fixed shortly. In the mean time, you can {go back} or visit the {home page}.

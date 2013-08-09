@@ -1,0 +1,6 @@
+en:
+  pages:
+    "404":
+      not_found: Page Not Found
+      desc_1: Sorry, the page you requested could not be found.
+      desc_2: Please make sure the URL you entered is correct, you can also {go back} or visit the {home page}.

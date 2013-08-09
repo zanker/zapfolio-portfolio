@@ -1,0 +1,99 @@
+/*
+*= require libraries/jquery
+*/
+
+(function($, window) {
+  var cached_restyle = {};
+
+  function restyle_layout(event) {
+    var layout_data = cached_restyle[event.layout];
+
+    var css = layout_data.css;
+    for( var key in layout_data.template_vars ) {
+      if( event.vars[key] ) {
+        css = css.replace(new RegExp(layout_data.template_vars[key], "g"), event.vars[key]);
+      } else {
+        css = css.replace(new RegExp(layout_data.template_vars[key], "g"), layout_data.fallback_vars[key]);
+      }
+    }
+
+    $("#page-css").html(css);
+
+    window.parent.postMessage("updated", "<%= CONFIG[:editor_origin] %>");
+  }
+
+  var messageHandler = {
+    // Reload the page
+    reload: function(data) {
+      window.location.reload();
+    },
+
+    // Fully custom CSS
+    custom: function(event) {
+      $("#page-css").html(event.css);
+      $("#page-css-layout, #page-css-restyled, #new-page-css-layout").remove();
+      window.parent.postMessage("updated", "<%= CONFIG[:editor_origin] %>");
+    },
+
+    // Restyling a layout
+    restyle: function(event) {
+      $("#page-css-layout, #new-page-css-layout").remove();
+
+      // We need to load the CSS for the layout to do our retemplating
+      if( !cached_restyle[event.layout] ) {
+        $.ajax("/site-assets/" + Portfolio.website_id + "/restyle/" + event.layout + "/" + Portfolio.cache_bust.css, {
+          success: function(css_data) {
+            cached_restyle[event.layout] = css_data;
+            restyle_layout(event);
+          }
+        });
+
+      // Use our cached data
+      } else {
+        restyle_layout(event);
+      }
+    },
+
+    // Using a layout without any customization
+    layout: function(event) {
+      $("#page-css").html("");
+      $("#page-css-restyled").remove();
+
+      // Need to possibly load a new layout first
+      var layout_tag = $("#page-css-layout");
+      if( layout_tag.length == 0 || layout_tag.data("layout") != event.layout ) {
+        layout_tag = $("<link id='new-page-css-layout' media='all' rel='stylesheet' type='text/css'>").insertAfter("#css-header");
+
+        // jQuery doesn't seem to handle load properly when swapping the assets
+        // so will first setup the event, then load the new data
+        // then when it loads, will remove the old and swap the ids
+        layout_tag.one("load", function() {
+          $("#page-css-layout").remove();
+          $("#new-page-css-layout").attr("id", "page-css-layout");
+
+          window.parent.postMessage("updated", "<%= CONFIG[:editor_origin] %>");
+        });
+        layout_tag.attr("href", "/site-assets/" + Portfolio.website_id + "/fragment/" + event.layout + "/" + Portfolio.cache_bust.css + ".css").data("layout", event.layout);
+      } else {
+        window.parent.postMessage("updated", "<%= CONFIG[:editor_origin] %>");
+      }
+    }
+  };
+
+  // Dispatch
+  window.addEventListener("message", function(event) {
+    if( event.origin != "<%= CONFIG[:editor_origin] %>" ) return;
+
+    if( messageHandler[event.data.type] ) {
+      messageHandler[event.data.type](event.data);
+    }
+  }, false);
+
+  // Tell the parent we're reloading
+  $(window).unload(function() {
+    window.parent.postMessage("reloading", "<%= CONFIG[:editor_origin] %>");
+  });
+
+  // Ready for changes
+  window.parent.postMessage("ready", "<%= CONFIG[:editor_origin] %>");
+})(jQuery, window);

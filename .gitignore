@@ -1,0 +1,8 @@
+.bundle
+.config
+lib/bundler/man
+public/system
+rdoc
+log/
+spec/reports
+tmp

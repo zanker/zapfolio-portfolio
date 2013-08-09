@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+require File.expand_path("../../config/application", __FILE__)
+Rails.application.require_environment!
+
+cache_key = SecureRandom.hex(4)
+
+to_update = {}
+
+if ARGV.first == "all" or ARGV.first == "css"
+  to_update["cache_bust.css"] = cache_key
+end
+
+if ARGV.first == "all" or ARGV.first == "js"
+  to_update["cache_bust.js"] = cache_key
+end
+
+if !to_update.empty?
+  Website.set({}, to_update)
+else
+  puts "Cache to bust not specified"
+end

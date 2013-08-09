@@ -1,0 +1,195 @@
+$total-cols: 24
+$col-width: 4%
+$gutter-width: 0.1738%
+$side-gutter-width: 0
+
+@import "susy"
+@import "helpers"
+
+body
+  line-height: em(18px)
+
+// Look into https://developer.mozilla.org/En/CSS/Image-rendering for image resizing later, possibly
+img
+  max-width: 100%
+
+#content
+  @include container
+  width: auto
+
+#mobile-menu-nav
+  display: none
+
+.tablet, .mobile
+  display: none
+
+@mixin wrapper-top-menu
+  #content
+    padding: em(12px) em(8px) 0 em(8px)
+
+  .menu
+    display: inline-block
+
+  #menu-nav
+    .sub-menu
+      float: left
+      position: absolute
+      margin-top: 0
+
+  .menu.opened, .menu.active
+    .sub-menu
+      display: none
+
+  .menu.mouse-active
+    .sub-menu
+      display: block
+
+#wrapper
+  margin: em(4px) em(4px) 0 em(4px)
+
+  &.center
+    margin-right: auto
+    margin-left: auto
+
+    &.menu-top
+      #content
+        padding-left: 0
+
+  &.menu-left
+    #content
+      margin-left: em(235px)
+
+  &.menu-right
+    #content
+      margin-right: em(235px)
+
+  &.menu-left, &.menu-right
+    #logo
+      margin-bottom: em(8px)
+
+    #menu-nav
+      .sub-menu
+        margin-top: em(2px)
+
+  &.menu-top
+    +wrapper-top-menu
+
+// CSS dropdowns
+#menu-nav
+  a
+    display: block
+    width: 100%
+
+  .sub-menu
+    display: none
+
+  .menu.opened, .menu.active
+    .sub-menu
+      display: block
+
+#side-bar
+  &.left
+    float: left
+    width: em(200px)
+    padding-right: em(18px)
+
+  &.right
+    float: right
+    width: em(200px)
+    padding-left: em(18px)
+
+  &.top
+    width: 100%
+
+  &.left, &.right
+    #logo
+      max-width: 200px
+
+// Primarily want to save space where it's completely unnecessary to waste it
+@include respond-to(tablet-landscape)
+  .tablet
+    display: block
+
+  // Remove the centering
+  #wrapper
+    max-width: 100%
+
+    &.center
+      margin-right: 0
+      margin-left: 0
+
+  #side-bar.top
+    img
+      width: auto
+      height: auto
+
+
+// Space becomes more valuable, so we want to move the menu up top but keep it on the same line as the logo
+@include respond-to(tablet-portrait)
+  #wrapper
+    &.center
+      margin-right: 0
+      margin-left: 0
+
+    &.menu-left, &.menu-right
+      +wrapper-top-menu
+
+    &.menu-left, &.menu-right, &.menu-top
+      #logo
+        display: inline-block
+        margin-right: em(6px)
+        margin-bottom: 0
+
+  #menu-nav
+    vertical-align: bottom
+    display: inline-block
+
+  #content
+    margin-left: 0 !important
+    margin-right: 0 !important
+
+  #side-bar
+    &.left
+      padding-right: 0
+
+    &.right
+      padding-left: 0
+
+    &.left, &.right
+      float: none
+      width: 100%
+      text-align: left
+
+
+// Logo (if any) gets moved to its own line, then menu, then content
+@include respond-to(mobile-landscape)
+  .mobile
+    display: block
+
+  #side-bar
+    margin-bottom: em(8px)
+
+    #logo
+      vertical-align: bottom
+
+  #wrapper
+    #menu-nav
+      display: none
+
+  #mobile-menu-nav
+    display: inline-block
+    width: 245px
+
+
+@include respond-to(mobile-portrait)
+  #wrapper
+    #side-bar
+      width: 100%
+      max-width: 100%
+      margin-right: 0
+      text-align: center !important
+      display: block
+      margin-bottom: em(8px)
+
+  #mobile-menu-nav
+    width: 100%

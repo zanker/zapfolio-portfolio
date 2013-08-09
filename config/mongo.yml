@@ -1,0 +1,22 @@
+defaults: &defaults
+  host: 127.0.0.1
+  port: 27017
+
+development:
+  <<: *defaults
+  database: zapfolio_development
+
+test:
+  <<: *defaults
+  database: zapfolio_test
+
+production: &production
+  <<: *defaults
+  port: 29000
+  host: core1.aws.zapfol.io
+  database: zapfolio_production
+  username: root
+  password: Agopo4Gga
+
+worker:
+  <<: *production

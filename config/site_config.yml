@@ -1,0 +1,34 @@
+---
+base: &base
+  :domain: zapfol.development
+  :portfolio_domain: zapfol.development
+  :manager_site: http://localhost:5000
+  :regexp_domain: zapfol\.development
+  :noreply: :noreply@zapfol.io
+  :editor_origin: http://localhost:5000
+  :cdn: http://localhost:5001
+
+  :layouts:
+    - dark
+    - light
+
+  :contact:
+    :email: support@zapfol.io
+
+development: &development
+  <<: *base
+
+test: &test
+  <<: *base
+
+production: &production
+  <<: *base
+  :domain: zapfol.io
+  :portfolio_domain: zapfol.io
+  :manager_site: https://www.zapfol.io
+  :regexp_domain: zapfol\.io
+  :editor_origin: https://www.zapfol.io
+  :cdn: //d3h9d5zx6uh3mr.cloudfront.net
+
+worker: &worker
+  <<: *production

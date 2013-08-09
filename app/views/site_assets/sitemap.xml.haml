@@ -1,0 +1,9 @@
+:plain
+  <?xml version="1.0" encoding="UTF-8"?>
+%urlset{:xmlns => "http://www.sitemaps.org/schemas/sitemap/0.9"}
+  - @website.pages.public.only(:data_updated_at, :updated_at, :slug, :_type).each do |page|
+    %url
+      %loc= "#{request.scheme}://#{request.host_with_port}/#{@website.home_page_id == page._id ? "" : page.slug}"
+
+      %lastmod= (page.data_updated_at || page.updated_at).strftime("%Y-%m-%dT%H:%M:%S+00:00")
+      %priority= page.is_a?(MediaPage) ? 1 : 0.5

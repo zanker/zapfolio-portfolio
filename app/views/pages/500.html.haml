@@ -1,0 +1,6 @@
+#title
+  %h3= t(".page_error")
+
+#page
+  %p= t(".desc_1")
+  %p!= linkify_text(t(".desc_2"), url_for(:back), "/")

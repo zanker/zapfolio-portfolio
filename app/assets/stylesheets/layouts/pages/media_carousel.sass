@@ -1,0 +1,41 @@
+@import "helpers"
+
+#content.page-mediacarousel
+  .last, .next
+    display: none
+
+  .album
+    ul
+      margin-top: em(24px)
+
+      li
+        display: inline-block
+
+        .frame
+          +opacity(0.7)
+
+          &:hover
+            cursor: pointer
+            +opacity(1)
+            +transition(opacity 0.10s linear)
+
+          &.active
+            +opacity(1)
+
+        a
+          vertical-align: middle
+          text-align: center
+          font-weight: bold
+          cursor: pointer
+          font-size: em(20px)
+          display: block
+          color: black
+          text-decoration: none
+
+        &.previous, &.next
+          vertical-align: top
+          width: em(20px)
+
+          a[disabled]
+            color: grey
+            cursor: default

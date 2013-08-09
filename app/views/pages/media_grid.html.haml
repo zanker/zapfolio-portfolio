@@ -1,0 +1,19 @@
+= block_partial("pages/base", :title => @page.title) do
+  - if @page.body?
+    %p!= @page.body
+
+  - @media, pagination = generate_grid_media(@page, @page.media(params[:page].to_i))
+
+  - if @media.empty?
+    %p.error= t("pages.album.no_media")
+
+  - else
+    .tablet= pagination
+
+    .album
+      - @media.each do |data|
+        .media
+          %a{:href => data[:bo], :rel => :gallery, :title => data[:title]}
+            %img.frame{:src => data[:o], :width => data[:ow], :height => "auto", :alt => data[:title]}
+
+    = pagination

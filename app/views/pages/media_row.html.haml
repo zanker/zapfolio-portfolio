@@ -1,0 +1,22 @@
+= block_partial("pages/base", :title => @page.title) do
+  - if @page.body?
+    %p!= @page.body
+
+  - @media, pagination = generate_row_media(@page, @page.media(params[:page].to_i))
+
+  - if @media.empty?
+    %p.error= t("pages.album.no_media")
+
+  - else
+    - if @page.growth_type == :vertical
+      .pagination-top= pagination
+    - else
+      .tablet.pagination-top= pagination
+
+    .album{:class => @page.growth_type}
+      - @media.each do |data|
+        .media
+          %a{:href => data[:bo], :rel => :gallery, :title => data[:title]}
+            %img{:src => data[:o], :alt => data[:title], :height => "auto", :width => data[:ow]}
+
+    .pagination-bottom= pagination

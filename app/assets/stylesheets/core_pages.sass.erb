@@ -1,0 +1,5 @@
+@import "core"
+<% Dir[Rails.root.join("app", "assets", "stylesheets", "core_pages", "*.sass")].each do |file| %>
+@import "core_pages/<%= File.basename(file, ".sass") %>"
+<% end %>
+

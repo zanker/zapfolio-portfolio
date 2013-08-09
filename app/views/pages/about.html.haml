@@ -1,0 +1,6 @@
+= block_partial("pages/base", :title => @page.title) do
+  - if @page.picture_uid?
+    .picture{:class => @page.picture_align}
+      = image_tag(@page.picture.url, :alt => t("picture"), :class => :frame, :width => @page.picture_meta["width"] ? "#{@page.picture_meta["width"]}px" : nil, :height => @page.picture_meta["height"] ? "#{@page.picture_meta["height"]}px" : nil)
+
+  != @page.body

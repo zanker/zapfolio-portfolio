@@ -1,0 +1,22 @@
+@import "helpers"
+
+#content.page-mediacarousel
+  .album
+    .media
+      img
+        max-height: 100%
+        max-width: 100%
+
+        &.second
+          display: none
+
+  @include respond-to(tablet-portrait)
+    .album
+      .media
+        img
+          height: auto !important
+
+  @include respond-to(mobile-landscape)
+    .album
+      ul
+        display: none

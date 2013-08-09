@@ -1,0 +1,96 @@
+@import "helpers"
+@import "compass"
+
+#content.page-contact, #password
+  .form, .body
+    display: inline-block
+
+  .body
+    vertical-align: top
+    width: 50%
+
+  .form
+    width: 45%
+    min-width: em(300px)
+    max-width: em(450px)
+    margin-bottom: em(14px)
+    margin-right: em(12px)
+
+    .required
+      color: $error_color
+
+    .error
+      margin-bottom: em(30px)
+
+      h4
+        font-size: 120%
+        font-weight: bold
+        color: $error_color
+        margin-bottom: em(4px)
+
+    .success
+      color: $success_color
+      font-size: 105%
+
+    input[type='text'], input[type='password'], input[type='email'], textarea
+      +border-radius(2px)
+      border: 1px solid $button_border
+      padding: em(3px)
+
+    input[type='submit']
+      background-color: $button_bg_end
+      +background(linear-gradient($button_bg_start, $button_bg_end))
+      +border-radius(2px)
+      border: 1px solid $button_border
+      color: $button_color
+      padding: em(6px) em(12px) em(6px) em(12px)
+
+      &:hover
+        cursor: pointer
+        +box-shadow($button_border 0 0 em(3px))
+
+      &:active
+        +box-shadow(inset $button_border 0 0 em(8px))
+        background-color: $button_bg_end
+        +background(linear-gradient($button_bg_end, $button_bg_start))
+
+    .row
+      padding: em(8px) 0 em(8px) 0
+
+      .text, .element
+        display: inline-block
+        vertical-align: middle
+
+      .text
+        width: 45%
+
+        .required
+          margin-left: em(3px)
+
+      .element
+        width: 53%
+
+        input
+          width: 95%
+
+      &.missing
+        color: $error_color
+
+      &.spacer
+        .text
+          vertical-align: top
+          display: block
+          width: 100%
+        .element
+          margin-top: em(4px)
+          display: block
+          width: 100%
+
+          textarea
+            margin: 0
+            width: 95%
+            height: em(150px)
+
+      &:first-child
+        padding-top: 0
+        margin-top: 0

@@ -1,0 +1,29 @@
+@import "helpers"
+
+#content.page-mediarow
+  .album.vertical
+    .media
+      margin-bottom: em(4px)
+
+      &:last-child
+        margin-bottom: 0
+
+  .album.horizontal
+    white-space: nowrap
+    overflow-x: auto
+    max-width: 100%
+
+    .media
+      display: inline-block
+      margin-right: em(4px)
+
+      &:last-child
+        margin-right: 0
+
+    @include respond-to(tablet-portrait)
+      white-space: inherit
+      overflow-x: auto
+
+      .media
+        display: block
+        margin-right: 0

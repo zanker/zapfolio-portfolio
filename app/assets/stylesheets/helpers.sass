@@ -1,0 +1,19 @@
+@function em($px, $context: 16px)
+  @return ($px / $context) * 1em
+
+// https://gist.github.com/455690
+// In order:
+// iPad in landscape, iPad in portrait, mobile phone in landscape/portrait
+@mixin respond-to($media)
+  @if $media == tablet-landscape
+    @media screen and (max-width: 1024px), handheld and (max-device-width: 1024px)
+      @content
+  @else if $media == tablet-portrait
+    @media screen and (max-width: 768px), handheld and (max-devide-width: 768px)
+      @content
+  @else if $media == mobile-landscape
+    @media screen and (max-width: 480px), handheld and (max-device-width: 480px)
+      @content
+  @else if $media == mobile-portrait
+    @media screen and (max-width: 320px), handheld and (max-device-width: 320px)
+      @content

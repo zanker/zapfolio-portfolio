@@ -1,0 +1,32 @@
+= block_partial("pages/base", :title => @page.title) do
+  - if @page.body?
+    %p!= @page.body
+
+  - @media = generate_carousel_media(@page, @page.media)
+
+  - if @media.empty?
+    %p.error= t("pages.album.no_media")
+
+  - else
+    .album
+      .media{:style => "height: #{@media[0][:oh]}px"}
+        %img.first{:src => @media.first[:o], :alt => @media.first[:title], :height => @media.first[:oh], :width => "auto", "data-cycle" => 0}
+
+        - if @media.second
+          %img.second{:src => @media.second[:o], :alt => @media.second[:title], :height => @media.second[:oh], :width => "auto", "data-cycle" => 1}
+
+      %ul.thumbnails
+        %li.previous
+          %a{:href => "#", :disabled => :disabled, :style => "line-height: #{@media[0][:sh]}px"} &#171;
+
+        - @media.each_index do |index|
+          - break if index >= @page.per_page
+          %li.thumbnail
+            %img.frame{:src => @media[index][:s], :alt => @media[index][:title], :height => @media[index][:sh], :width => @media[index][:sh], "data-index" => index, :class => index == 0 ? :active : nil}
+
+        %li.next
+          %a{:href => "#", :disabled => @media.length <= @page.per_page ? :disabled : nil, :style => "line-height: #{@media[0][:sh]}px"} &#187;
+
+    :javascript
+      var media = #{@media.to_json};
+      var carouselTimer = #{@page.timer * 1000};

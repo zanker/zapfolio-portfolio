@@ -1,0 +1,305 @@
+@import "helpers"
+@import "compass"
+
+body
+  background-color: $background
+  font-family: $text_font
+  color: $text_color
+  text-transform: $text_transform
+
+
+footer
+  margin: 12px 2px 0 2px
+  color: $text_color
+  font-size: 12px
+
+// These are the logical chunks of UI that change based on responsive needs so they can be readapted easily
+@mixin menu-top
+  #menu-nav
+    margin: em(2px)
+
+    .menu
+      padding-right: em(4px * 2)
+
+      a
+        padding: 0
+        width: 100%
+
+    .menu > a
+      padding: em(4px)
+      border: 1px solid $sidebar_border
+      text-align: center
+      @include border-radius(2px)
+
+      &.has-children
+        @include border-top-left-radius(2px)
+        @include border-top-right-radius(2px)
+        @include border-bottom-left-radius(0)
+        @include border-bottom-right-radius(0)
+
+    .menu
+      .sub-menu
+        li
+          margin: 0 !important
+          padding-left: 0 !important
+          padding-right: 0 !important
+
+          a
+            padding: em(4px)
+            @include border-radius(0)
+            border-left: 1px solid $sidebar_border
+            border-right: 1px solid $sidebar_border
+
+          &:last-child
+            a
+              border-bottom: 1px solid $sidebar_border
+              @include border-bottom-left-radius(2px)
+              @include border-bottom-right-radius(2px)
+
+      &.opened
+        .has-children
+          color: $menu_parent_opened
+          +down-arrow
+
+@mixin down-arrow
+  .arrow
+    border-left: em(6px) solid transparent
+    border-right: em(6px) solid transparent
+    border-top: em(10px) solid $menu_text_hover_color
+    border-bottom: 0
+
+#wrapper
+  margin-top: em(6px)
+
+  #title
+    h3
+      font-size: 180%
+      line-height: 100%
+      color: $title_color
+      font-family: $title_font
+      text-transform: $title_transform
+      font-weight: bold
+      margin: em(2px) 0 em(10px) 0
+
+  #content
+    p
+      margin-bottom: em(12px)
+
+  #menu-nav
+    .menu
+      .has-children
+        .arrow
+          width: 0
+          height: 0
+          float: right
+          margin: em(4px)
+          display: inline-block
+          vertical-align: middle
+          border-left: em(6px) solid transparent
+          border-right: em(6px) solid transparent
+          border-bottom: em(10px) solid $menu_text_color
+          border-top: 0
+      &:hover
+        .has-children
+          .arrow
+            border-bottom: em(10px) solid $menu_text_hover_color
+
+  &.menu-right
+    #menu-nav
+      .menu > a
+        padding: em(3px) em(6px) em(3px) 0
+
+    #side-bar
+      border-left: em(1px) solid $sidebar_border
+
+  &.menu-left
+    #menu-nav
+      .menu > a
+        padding: em(3px) 0 em(3px) em(6px)
+
+    #side-bar
+      border-right: em(1px) solid $sidebar_border
+
+  &.menu-left, &.menu-right
+    #menu-nav
+      .menu
+        a
+          width: auto
+          @include border-radius(2px)
+
+      .sub-menu
+        margin-bottom: em(3px)
+
+      .menu
+        &.opened
+          .has-children
+            +down-arrow
+
+      .menu:last-child
+        .sub-menu
+          margin-bottom: 0
+
+  // Padding
+  @include respond-to(tablet-landscape)
+    margin-left: em(2px) !important
+    margin-right: em(2px) !important
+
+  // Menu styling
+  @include respond-to(tablet-portrait)
+    &.menu-left, &.menu-right
+      +menu-top
+
+      #menu-nav
+        .menu
+          &.opened
+            .has-children
+              .arrow
+                border-bottom: em(10px) solid $menu_text_hover_color
+                border-top: 0
+
+          &.active
+            .has-children
+              +down-arrow
+
+    &.menu-left
+      #side-bar
+        border-right: 0
+    &.menu-right
+      #side-bar
+        border-left: 0
+
+  @include respond-to(mobile-landscape)
+    margin-top: 0
+
+    &.menu-left, &.menu-right
+      #menu-nav
+        .menu
+          padding: 0 0 0 0
+
+  @include respond-to(mobile-portrait)
+    margin-top: 0
+
+  #side-bar
+    &.left
+      text-align: left
+
+    &.right
+      text-align: right
+
+  #menu-nav
+    li
+      a
+        background-color: $background
+        @include border-radius(0)
+
+    .menu
+      a
+        color: $menu_text_color
+        font-family: $menu_text_font
+        text-decoration: none
+        text-transform: $menu_text_transform
+
+        &:hover
+          color: $menu_text_hover_color
+          cursor: pointer
+          text-decoration: underline
+          background-color: $menu_bg_hover
+
+      .sub-menu
+        z-index: 99999
+
+    .active > a
+      color: $menu_active_color
+      background-color: $menu_bg_active
+
+  &.menu-top
+    +menu-top
+
+    .menu
+      .active
+        .has-children
+          +down-arrow
+
+  &.menu-left
+    #menu-nav
+      .menu
+        .sub-menu
+          li
+            a
+              padding: em(2px) em(6px) em(2px) em(12px)
+
+  &.menu-right
+    #menu-nav
+      .menu
+        .sub-menu
+          li
+            a
+              padding: em(2px) em(12px) em(2px) em(6px)
+
+  // Media container styling
+  img.frame
+    border: em(1px) solid $subtle_border
+    @include border-radius(2px)
+    padding: em(2px)
+
+  .pagination-top
+    margin-bottom: em(12px)
+
+  .pagination-bottom
+    margin-top: em(12px)
+
+  .pagination
+    color: $pagination_color_active
+
+    a
+      color: $pagination_color
+      text-decoration: none
+
+      &:hover
+        color: $pagination_color_active
+        text-decoration: underline
+
+    .first, .prev, .page, .next, .last
+      display: inline-block
+      padding: em(3px) em(1px) em(3px) em(1px)
+      margin: 0 em(1px) 0 em(1px)
+      background-color: $pagination_bg
+      border: em(1px) solid $pagination_border
+      @include border-radius(2px)
+
+      a
+        padding: em(3px) em(8px) em(3px) em(8px)
+
+      &.current
+        padding: em(3px) em(9px) em(3px) em(9px)
+        font-weight: bold
+        background-color: $pagination_bg_active
+
+      &:hover
+        background-color: $pagination_bg_active
+
+    .gap
+      background-color: inherit
+      border: 0
+      padding: em(3px) em(2px) 0 em(2px)
+      font-weight: bold
+      font-size: 110%
+      vertical-align: bottom
+
+    .first
+      margin-right: 0
+    .last
+      margin-left: 0
+
+    .prev
+      margin-left: 0
+      margin-right: em(10px)
+    .next
+      margin-right: 0
+      margin-left: em(10px)
+
+    span
+      &:first-child
+        margin-left: 0
+      &:last-child
+        margin-right: 0

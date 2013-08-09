@@ -1,0 +1,28 @@
+= block_partial("pages/base", :title => @page.title) do
+  .form
+    - if params[:controller] == "contacts"
+      .error
+        %h4= t(".error")
+        %p= t(".fill_blanks")
+    - elsif flash[:notice] == :queued
+      %p.success
+        - if @page.thanks_text?
+          != @page.thanks_text
+        - else
+          = t(".thanks_sent")
+
+    %form{:method => :POST, :action => contact_path(@page._id)}
+      = render_contact_field(:key => :email, :text => t(".email"), :required => true, :type => :email_field_tag, :placeholder => t(".john_doe"), :parent => :contact)
+      - @page.fields.each do |field|
+        = render_contact_field(:key => field._id, :text => field.name, :required => field.required, :type => field.input_type == "text_field" ? :text_field_tag : :text_area_tag, :placeholder => field.placeholder, :parent => :contact)
+
+      = utf8_enforcer_tag
+      = hidden_field_tag(request_forgery_protection_token.to_s, form_authenticity_token)
+      %p
+        %span.required *
+        = t(".note_required")
+      = submit_tag(t(".send_message"))
+
+  - if @page.body?
+    .body
+      != @page.body

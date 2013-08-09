@@ -1,0 +1,11 @@
+en:
+  logo: Logo
+  picture: Picture
+  powered_by: Powered by
+  zapfolio: Zapfolio
+
+  titles:
+    "404": Page Not Found (404)
+    login_required: Login Required
+    page: "(page %{page})"
+    portfolio: Portfolio
